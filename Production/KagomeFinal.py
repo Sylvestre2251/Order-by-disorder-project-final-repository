@@ -19,21 +19,23 @@ from pathlib import Path
 import plotly.graph_objects as go
 import plotly.graph_objs as go
 
+import os
 
 
 
-
-class Configuration:
+class Configuration(object):
     #"""generate a configuration of spins"""
     
-    def __init__(self, a,theta,Nx,Ny, J,seed_control=False,seed=1500):
-        #'we create a kagome lattice from parameter a and theta with Nx*Ny*3 spins , '
-        self.a,self.theta,self.Nx,self.Ny,self.J=a,theta,Nx,Ny,J,
+    
+    def __init__(self,Nx,Ny, J,directory,seed_control=False,seed=1500,preload=False,oldconfig=0):
+        #we create a kagome lattice from parameter a and theta with Nx*Ny*3 spins
+        # for this we define a few global variables 
+        self.a,self.theta,self.Nx,self.Ny,self.J=1,2*np.pi/3,Nx,Ny,J,
         self.N=Nx*Ny*3
 
-        # a_1 and a_2 are the lattice translation generating vectors 
-        a_1=a*np.array([1,0])
-        a_2=a*np.array([-1*np.cos(theta),np.sin(theta)])
+        # a_1 and a_2 are the generating vectors for the kagome lattice
+        a_1=self.a*np.array([1,0])
+        a_2=self.a*np.array([-1*np.cos(self.theta),np.sin(self.theta)])
         
         # we construct the unit cell
         unit_cell=np.array([[0,0],0.5*a_2,0.5*a_1])
@@ -49,52 +51,78 @@ class Configuration:
         # we create a dim object containing the dimensions of the lattice 
         dim=self.lattice.shape
 
-        #seed control for when we want to test with the same configuration
+        #seed control for when we want to test with the same starting configuration
         if seed_control==True:
             np.random.seed(seed) 
 
-        # then we create a random spin configuration  self.config as a unit 3d vector on each grid point
+        # then we create a random spin configuration  self.config as a 3d vector on each grid point
         self.config=2*np.random.rand(dim[0],dim[1],dim[2],3)-1*np.ones((dim[0],dim[1],dim[2],3))
 
-        # we make sure they are unit vectors
+        # we normalize to get unit vectors at each grid points
         Norm=np.repeat(LA.norm(self.config,axis=3)[:, :,:, np.newaxis], 3, axis=3)
         self.config/=Norm
         
+        # if we want to start from a previous simulation config we can pass it in the parameters
+        if preload==True:
+            self.config=oldconfig
+
         # we want to save some value while the simulation runs for post processing
+        # especially The energy , the acceptation rate, the temperature and heat capacity
         self.Energy=[self.total_energy()]
         self.acceptation_rates=[]
-
+        self.Temperatures=[]
         self.Capa=[]
 
+
+        #we create a directory to dump simulations results
+        cwd = Path.cwd()
+        parent = cwd.parent
+        #current_dir = os.getcwd()
+        
+        relative_path = 'Results/'+str(directory)
+
+        full_path = os.path.join(parent, relative_path)
+        
+        if not os.path.exists(full_path):
+            os.mkdir(full_path)
+        self.full_path=full_path
+
     def get_mean_field(self):
-        """this part implements the sommation over spins nearest spins"""
+        #This part of the code adds the spins of the neighbors at lattice point
+        #this creates a vector which is very usefull get energy contribution 
+        # and do overelaxation fast
+
+        # we create the (self.Nx,self.Ny, 3,3) tensor
+
         self.mean_field=np.zeros(self.config.shape)
+
+        # we add the fields from the two other points on a triangle
         self.mean_field[:,:,0,:]=self.config[:,:,1,:]+self.config[:,:,2,:]
         self.mean_field[:,:,1,:]=self.config[:,:,2,:]+self.config[:,:,0,:]
         self.mean_field[:,:,2,:]=self.config[:,:,0,:]+self.config[:,:,1,:]
 
 
+        #self.mean_field[:,:,0,:]+= np.roll(self.config[:,:,1,:],(0,-1),axis=(0,1)).copy()+np.roll(self.config[:,:,2,:],(-1,0),axis=(0,1)).copy()
+        #self.mean_field[:,:,1,:]+=np.roll(self.config[:,:,2,:],(-1,1),axis=(0,1)).copy()+np.roll(self.config[:,:,0,:],(0,1),axis=(0,1)).copy()
+        #self.mean_field[:,:,2,:]+=np.roll(self.config[:,:,0,:],(1,0),axis=(0,1)).copy()+np.roll(self.config[:,:,1,:],(1,-1),axis=(0,1)).copy()
 
-
+        #then we add the spins of two neighboring points
         self.mean_field[:,:,0,:]+= np.roll(self.config[:,:,1,:],(0,1),axis=(0,1)).copy()+np.roll(self.config[:,:,2,:],(1,0),axis=(0,1)).copy()
         self.mean_field[:,:,1,:]+=np.roll(self.config[:,:,2,:],(1,-1),axis=(0,1)).copy()+np.roll(self.config[:,:,0,:],(0,-1),axis=(0,1)).copy()
         self.mean_field[:,:,2,:]+=np.roll(self.config[:,:,0,:],(-1,0),axis=(0,1)).copy()+np.roll(self.config[:,:,1,:],(-1,1),axis=(0,1)).copy()
-
-
-
         return self.mean_field
   
 
     
     def total_energy(self):
-        
-        M1=self.get_mean_field()
-        M2=self.config
+        # the total energy is just a dot product of the vector at each lattice site with 
+        #the sum of neighbor's spins of course there is an overcounting factor 
+        #that will be taken care of in post processing
+        M3=self.get_mean_field()
+        M4=self.config
+        #the np einsum allows us to deal with the 4 dimensional array efficiently
+        E=self.J*np.sum(np.einsum('ijkl,ijkl->ijk', M3, M4))
 
-        #np.einsum uses Einstein summation rule to calculate faster
-        
-        E=0.5*self.J*np.sum(np.einsum('ijkl,ijkl->ijk', M1, M2))
-        
         return E
 
 
@@ -102,20 +130,27 @@ class Configuration:
 
     
     def delta_energy(self):
-        ''' this function is used to compute the energy difference after a change '''
-        
+        # this function is used to compute the energy difference for each 
+        # lattice point this is very usefull to do the MC step 
+        # at the same time on the whole lattice
         M1=self.get_mean_field()
+
+        #we use the difference between the new and old spins
         M2=self.flipped_spin-self.config
         
+        #the energy change at each lattice site is calculated with a dot product
         C=np.einsum('ijkl,ijkl->ijk', M1, M2)
 
-        #we compute the difference in energy contribution between the modified and unaltered spin
+
+        #we do not forget the J factor
         Delta_E=(self.J)*C
+    
         return Delta_E
 
     
 
-    def overrelaxation_2(self,dose=0.1):
+
+    def overrelaxation(self,dose=0.1):
         #In this part we implement Nf iterrations of overrelaxation
       
 
@@ -126,29 +161,32 @@ class Configuration:
         pick[:Nf-1]=1
         np.random.shuffle(pick)
         pick=np.reshape(pick,(self.Nx,self.Ny,3))
-        pick=pick.astype(bool)
         newpick=np.repeat(pick[:, :,:, np.newaxis], 3, axis=3)
-
-
-
+        
+        newpick=newpick.astype(bool)
+        #print(self.config)
+        #print(self.total_energy())
         B=self.get_mean_field()
         Norm=np.repeat(LA.norm(B,axis=3)[:, :,:, np.newaxis], 3, axis=3)
         B/=Norm
-
+        
 
         dotproduct=np.einsum('ijkl,ijkl->ijk', B, self.config)
+
+        #print(dotproduct.max(),dotproduct.min())
+        #dotproduct=np.sqrt(np.abs(dotproduct)) * np.sign(dotproduct)
         newdotproduct=np.repeat(dotproduct[:, :,:, np.newaxis], 3, axis=3)
         normal=self.config-newdotproduct*B
 
 
+        #newarr=(2*newdotproduct)*B-self.confi
+        # #newarr=self.config-2*normal
+        newarr=self.config-2*(self.config-newdotproduct*B)
 
-        newarr=self.config-2*normal
+
+
 
         self.config=np.where(newpick,newarr,self.config )
-        
-
-
-
 
 
 
@@ -165,7 +203,7 @@ class Configuration:
             
 
                     
-            n = T * np.random.normal(0, 1, (self.Nx, self.Ny, 3, 3))
+            n = np.random.normal(0,np.sqrt(T),(self.Nx,self.Ny,3,3))
             self.flipped_spin=self.config+n
             Norm=np.repeat(LA.norm(self.flipped_spin,axis=3)[:, :,:, np.newaxis], 3, axis=3)
             self.flipped_spin/=Norm
@@ -188,7 +226,7 @@ class Configuration:
 
             if overrelaxation==True:
 
-                self.overrelaxation_2(overrelaxation_dose)
+                self.overrelaxation(overrelaxation_dose)
 
 
             if comp%100==0 and measure_capa==True:
@@ -203,51 +241,8 @@ class Configuration:
             self.Capa.append(Capacite)
             self.Energy=np.concatenate((self.Energy,Ener))
             self.Temperatures.append(T*np.ones(len(Ener)))
- 
 
 
-    
-
-    def measure_Capa(self,Nf,T,Nx,Ny):
-        beta=1/T
-        Ener=[]
-        for comp in range(Nf):
-
-
-                    
-            n = T * np.random.normal(0, 1, (self.Nx, self.Ny, 3, 3))
-
-            self.flipped_spin=self.config+n
-            Norm=np.repeat(LA.norm(self.flipped_spin,axis=3)[:, :,:, np.newaxis], 3, axis=3)
-            
-            self.flipped_spin/=Norm
-            delta=self.delta_energy()
-
-            proba=np.random.rand(self.Nx,self.Ny,3)
-            expener=np.exp(-beta*delta)
-            decision=np.where(proba<= expener)
-
-            newproba = np.repeat(proba[:, :,:, np.newaxis], 3, axis=3)
-            newexpener= np.repeat(expener[:, :,:, np.newaxis], 3, axis=3)
-            #print(np.array_equal(np.where(newproba[:,:,:,0]<=newexpener[:,:,:,0]), np.where(newproba[:,:,:,1]<=newexpener[:,:,:,1])))
-            self.config=np.where(newproba<= newexpener,self.flipped_spin,self.config)
-
-            
-            flag=len(decision[0])
-
-
-            if comp%100==0:
-                Ener.append(self.total_energy())
-                #print(self.total_energy())
-                self.acceptation_rates.append(flag/self.N)
-                #print(flag/self.N,T)
-
-        Capacite=np.var(Ener)/(T**2)
-        self.Capa.append(Capacite/(3*Nx*Ny))
-        self.Energy=np.concatenate((self.Energy,Ener))
-        
-
-        return Ener
 
 
 
@@ -256,8 +251,34 @@ class Configuration:
         """ we have sometimes a problem with the  spin vectors not 
         being normalised after too many rotations due to errors so we normalise them after each 
         flip and we verify their maximum norms"""
-        #print('norm=',LA.norm(self.config,axis=3).max())
-        #print('normf=',LA.norm(self.flipped_spin,axis=3).max())
+        print('maximumspinsnorm=',LA.norm(self.config,axis=3).max())
+        print('maximumrotatedvectornorm=',LA.norm(self.flipped_spin,axis=3).max())
+
+
+
+
+    def saveconfig(self,name,T):
+        # code for saving the spin configuration with parameters
+        mydict={
+        "Temperature": T,
+        "Nx": self.Nx,
+        "Ny": self.Ny,
+        "J": self.J,
+        "N":self.N,
+        "lattice":np.array(self.lattice),
+        "configuration":np.array(self.config),
+        "Energy":np.array(self.Energy),
+        "acceptation_rate":np.array(self.acceptation_rates)  ,
+        "Capacité":np.array(self.Capa)  ,
+        'Temperatures':self.Temperatures,
+        }
+        #np.save(title+'infos',[T,self.Nx,self.Ny,J,self.N])
+        title= os.path.join(self.full_path, name)
+        np.save(title, mydict)
+
+
+
+
 
 
 
@@ -314,135 +335,6 @@ class Configuration:
     
     
     
-    
-    
-    
-J = 1
-L = 12
-Nx = L
-Ny = L
-theta = 2*np.pi/3
-
-T_high = 1
-T_low = 0.002
-n_T = 20
-Temp = np.linspace(T_high, T_low, n_T)
-
-
-
-# Runs to get the mean values and standard deviations of the physical quantities
-n_runs = 15  
-
-E_mean_all = []
-E_std_all = []
-Capa_mean_all = []
-Capa_std_all = []
-
-
-
-for j, T in enumerate(Temp):
-    decoherencetime = 50000
-    numberMC = 100000
-
-    Ener_runs = []
-    Capa_runs = []
-
-    for run in range(n_runs):
-        A = Configuration(1, theta, Nx, Ny, J)
-
-        A.Monte_Carlo(decoherencetime, T)
-        A.verify_norm()
-
-        Ener = A.measure_Capa(numberMC, T, Nx, Ny)
-        A.verify_norm()
-
-        Ener_runs.append(np.mean(Ener))
-        Capa_runs.append(A.Capa[-1])
-
-    E_mean_all.append(np.mean(Ener_runs))
-    E_std_all.append(np.std(Ener_runs))
-    
-    Capa_mean = np.mean(Capa_runs)
-    Capa_std = np.std(Capa_runs)
-    
-    # filtering because of a point of anomaly
-    Capa_mean = min(Capa_mean, 2)
-    Capa_std = min(Capa_std, 2 - Capa_mean)
-
-
-    Capa_mean_all.append(Capa_mean)
-    Capa_std_all.append(Capa_std)
-
-    print(f"T step {j+1}/{n_T} done")
-    
-    
-    
-    
-A.display_config()
-
-
-
-triangle_sums = A.triangle_spins_sum()
-
-for i in range(A.Nx):
-    for j in range(A.Ny):
-        print(f"Sum of spins in the triangle ({i},{j}) :", triangle_sums[i, j])   
-
-
-# Plot Heat Capacity Vs T in browser with plotly
-
-fig = go.Figure()
-
-fig.add_trace(go.Scatter(
-    x=Temp,
-    y=Capa_mean_all,
-    error_y=dict(
-        type='data',
-        array=Capa_std_all,
-        visible=True
-    ),
-    mode='markers+lines',
-    name="Capacité thermique"
-))
-
-fig.update_layout(
-    xaxis_type="log",
-    xaxis_title="Température T",
-    yaxis_title="Capacité thermique C(T)",
-    title="Capacité thermique interactive",
-    template="plotly_white"
-)
-
-fig.show(renderer="browser")
-
-
-
-
-# Plot Energy Vs T in browser with plotly
-
-
-fig = go.Figure()
-
-fig.add_trace(go.Scatter(
-    x=Temp,
-    y=E_mean_all,
-    error_y=dict(
-        type='data',
-        array=E_std_all,
-        visible=True
-    ),
-    mode='markers+lines',
-    name="Heat Capacity"
-))
-
-fig.update_layout(
-    xaxis_title="Temperature T",
-    yaxis_title="Energy E",
-    title="Interactive Energy",
-    template="plotly_white"
-)
-
-fig.show(renderer="browser")
 
 
 
