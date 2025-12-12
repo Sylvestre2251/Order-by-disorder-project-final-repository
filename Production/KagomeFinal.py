@@ -262,7 +262,7 @@ class Configuration:
 
 
     def display_config(self, arrow_scale=0.3):
-    # positions (flatten)
+        # This function displays the spin configuration and the lattice grid using plotly and render it in a browser
         position = np.reshape(self.lattice, (3 * self.Nx * self.Ny, 2), order='C')
         arrows = np.reshape(self.config, (3 * self.Nx * self.Ny, 3), order='C')
         
@@ -277,7 +277,6 @@ class Configuration:
     
         fig = go.Figure()
     
-        # ---- Un trace par sous-lattice ----
         for s in range(3):
             xs, ys, zs = [], [], []
     
@@ -290,7 +289,7 @@ class Configuration:
             fig.add_trace(go.Scatter3d(
                 x=xs, y=ys, z=zs,
                 mode="lines",
-                line=dict(width=5, color=colors[s]),  # <-- UNE SEULE COULEUR VALIDÉE
+                line=dict(width=5, color=colors[s]),  
                 name=f"Sous-lattice {s}"
             ))
     
