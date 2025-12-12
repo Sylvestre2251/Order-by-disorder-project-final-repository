@@ -326,16 +326,13 @@ Temp = np.linspace(T_high, T_low, n_T)
 
 numberMC = 10000
 
-# --- Affichage initial (une seule fois) ---
 A = Configuration(1, theta, Nx, Ny, J)
 
-# --- Boucle sur les températures ---
 for j, T in enumerate(Temp):
     A.Monte_Carlo(numberMC, T)
     A.verify_norm()
     print(j, "done")
 
-# --- Affichage final (une seule fois, après la dernière température) ---
 A.display_config()
 
 
@@ -348,11 +345,9 @@ for i in range(A.Nx):
     
 
 
+# Runs to get the mean values and standard deviations of the physical quantities
+n_runs = 15  
 
-
-n_runs = 15  # nombre de runs indépendants pour chaque T
-
-# tableaux pour stocker les moyennes et écarts-types
 E_mean_all = []
 E_std_all = []
 Capa_mean_all = []
@@ -380,7 +375,6 @@ for j, T in enumerate(Temp):
         Ener_runs.append(np.mean(Ener))
         Capa_runs.append(A.Capa[-1])
 
-    # ---- ICI et UNIQUEMENT ICI (fin des runs pour cette température) ----
     E_mean_all.append(np.mean(Ener_runs))
     E_std_all.append(np.std(Ener_runs))
     
