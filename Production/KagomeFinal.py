@@ -313,36 +313,21 @@ class Configuration:
     
     
     
+    
+    
+    
+    
 J = 1
-L = 5
+L = 12
 Nx = L
 Ny = L
 theta = 2*np.pi/3
 
 T_high = 1
-T_low = 0.001
+T_low = 0.002
 n_T = 20
 Temp = np.linspace(T_high, T_low, n_T)
 
-numberMC = 10000
-
-A = Configuration(1, theta, Nx, Ny, J)
-
-for j, T in enumerate(Temp):
-    A.Monte_Carlo(numberMC, T)
-    A.verify_norm()
-    print(j, "done")
-
-A.display_config()
-
-
-
-triangle_sums = A.triangle_spins_sum()
-
-for i in range(A.Nx):
-    for j in range(A.Ny):
-        print(f"Sum of spins in the triangle ({i},{j}) :", triangle_sums[i, j])
-    
 
 
 # Runs to get the mean values and standard deviations of the physical quantities
@@ -355,10 +340,9 @@ Capa_std_all = []
 
 
 
-
 for j, T in enumerate(Temp):
-    decoherencetime = 10000
-    numberMC = 10000
+    decoherencetime = 50000
+    numberMC = 100000
 
     Ener_runs = []
     Capa_runs = []
@@ -394,9 +378,15 @@ for j, T in enumerate(Temp):
     
     
     
-    
-    
-    
+A.display_config()
+
+
+
+triangle_sums = A.triangle_spins_sum()
+
+for i in range(A.Nx):
+    for j in range(A.Ny):
+        print(f"Sum of spins in the triangle ({i},{j}) :", triangle_sums[i, j])   
 
 
 # Plot Heat Capacity Vs T in browser with plotly
