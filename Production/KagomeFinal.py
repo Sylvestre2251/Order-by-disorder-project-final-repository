@@ -293,7 +293,6 @@ class Configuration:
                 name=f"Sous-lattice {s}"
             ))
     
-        # ---- points du réseau ----
         fig.add_trace(go.Scatter3d(
             x=x, y=y, z=z,
             mode="markers",
@@ -333,6 +332,7 @@ class Configuration:
     
     
     
+
 
 
 
