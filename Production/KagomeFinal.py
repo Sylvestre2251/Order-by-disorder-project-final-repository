@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 12 16:51:59 2025
-
-@author: Sylvestre
-"""
 
 
 
@@ -328,6 +322,7 @@ class Configuration:
     
     
     
+
 
 
 
