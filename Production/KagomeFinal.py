@@ -284,7 +284,7 @@ class Configuration:
                 x=xs, y=ys, z=zs,
                 mode="lines",
                 line=dict(width=5, color=colors[s]),  
-                name=f"Sous-lattice {s}"
+                name=f"Sublattice {s}"
             ))
     
         fig.add_trace(go.Scatter3d(
@@ -322,6 +322,7 @@ class Configuration:
     
     
     
+
 
 
 
