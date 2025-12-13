@@ -52,11 +52,10 @@ for j, T in enumerate(Temp):
     Capa_mean = np.mean(Capa_runs)
     Capa_std = np.std(Capa_runs)
     
-    # filtering because of a point of anomaly
-    # Without this, the plot is around 1, and has the correct shape,
-    # except sometimes for the last point of temperature that is an anomaly and the heat capacity for this point only is far too larger
-    Capa_mean = min(Capa_mean, 2)
-    Capa_std = min(Capa_std, 2 - Capa_mean)
+    # This filter only the last point of temperature that sometimes is an anomaly that has a far too large heat capacity
+    # This doesn't change C(T) for the rest of the points of T since C for them is below 1.2
+    Capa_mean = min(Capa_mean, 1.2)
+    Capa_std = min(Capa_std, 1.2 - Capa_mean)
 
 
     Capa_mean_all.append(Capa_mean)
@@ -91,14 +90,14 @@ fig.add_trace(go.Scatter(
         visible=True
     ),
     mode='markers+lines',
-    name="Capacité thermique"
+    name="Heat Capacity"
 ))
 
 fig.update_layout(
     xaxis_type="log",
-    xaxis_title="Température T",
-    yaxis_title="Capacité thermique C(T)",
-    title="Capacité thermique interactive",
+    xaxis_title="Temperature T",
+    yaxis_title="Heat Capacity C(T)",
+    title="Heat Capacity against Temperatures",
     template="plotly_white"
 )
 
@@ -133,4 +132,5 @@ fig.update_layout(
 
 
 fig.show(renderer="browser")
+
 
