@@ -304,10 +304,6 @@ class Configuration:
         fig.show(renderer="browser")
 
     def triangle_spins_sum(self):
-        """
-        Calcule la somme vectorielle des trois spins de chaque triangle (cellule).
-        Retourne un tableau de forme (Nx, Ny, 3).
-        """
         return self.config.sum(axis=2)
     
     
@@ -332,6 +328,7 @@ class Configuration:
     
     
     
+
 
 
 
