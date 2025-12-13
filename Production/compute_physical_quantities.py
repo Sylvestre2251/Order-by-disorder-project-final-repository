@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 12 18:17:20 2025
-
-@author: Sylvestre
-"""
 
 
 
@@ -134,5 +128,6 @@ fig.update_layout(
     title="Interactive Energy",
     template="plotly_white"
 )
+
 
 fig.show(renderer="browser")
