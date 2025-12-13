@@ -3,7 +3,7 @@ Project Order by disorder
 
 Implementing a classical monte carlo simulation of the spins in a Kagome 2D lattice with overrelaxation 
 
-Observing a phase transition at finite temprature via observales such as specific heat 
+Observing a phase transition at finite temperature via observables such as specific heat 
 
 
 # Usage
