@@ -53,6 +53,8 @@ for j, T in enumerate(Temp):
     Capa_std = np.std(Capa_runs)
     
     # filtering because of a point of anomaly
+    # Without this, the plot is around 1, and has the correct shape,
+    # except sometimes for the last point of temperature that is an anomaly and the heat capacity for this point only is far too larger
     Capa_mean = min(Capa_mean, 2)
     Capa_std = min(Capa_std, 2 - Capa_mean)
 
@@ -131,3 +133,4 @@ fig.update_layout(
 
 
 fig.show(renderer="browser")
+
