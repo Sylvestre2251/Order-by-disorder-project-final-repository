@@ -6,7 +6,7 @@ import numpy.random as rnd
 import numpy.linalg
 import matplotlib.pyplot as plt
 from numpy import linalg as LA
-from numpy.random import normal
+#from numpy.random import normal
 import scipy
 from scipy.spatial.transform import Rotation as R
 from pathlib import Path
@@ -322,12 +322,5 @@ class Configuration:
     
     
     
-
-
-
-
-
-
-
 
 
