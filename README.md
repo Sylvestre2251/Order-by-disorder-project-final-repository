@@ -1,6 +1,9 @@
 # PHY_51171_EP - Physique Numérique (2025-2026)
 Project Order by disorder 
 
+Syvestre Gay 
+Tanoh Jean Michel N'guessan
+
 Implementing a classical monte carlo simulation of the spins in a Kagome 2D lattice with overrelaxation 
 
 Observing a phase transition at finite temperature via observables such as specific heat 
