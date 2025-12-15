@@ -266,7 +266,7 @@ class Simulation(object):
                 self.overrelaxation_2(overrelaxation_dose)
 
 
-            if  measure_capa==True and  np.abs(Nf-comp)<=3000:
+            if  measure_capa==True and  np.abs(Nf-comp)<=1000:
                 Ener.append(self.total_energy())
                 #print(self.total_energy())
 
@@ -390,26 +390,41 @@ class Simulation(object):
         r=R.from_quat(res.x/(np.linalg.norm(res.x)))
         arrows=r.apply(arrows,inverse=False)
 
-        
-        x, y, z = position[:, 0], position[:, 1], np.zeros(3 * self.Nx * self.Ny)
+        arrow_scale=0.3
+        x = position[:, 0]
+        y = position[:, 1]
+        z = np.zeros_like(x)
         Sx, Sy, Sz = arrows[:, 0], arrows[:, 1], arrows[:, 2]
-
-        X_lines, Y_lines, Z_lines = [], [], []
-        for xi, yi, zi, Sxi, Syi, Szi in zip(x, y, z, Sx, Sy, Sz):
-            X_lines += [xi, xi + Sxi, None]
-            Y_lines += [yi, yi + Syi, None]
-            Z_lines += [zi, zi + Szi, None]
-
+    
+        # one color per sublattice
+        colors = ['red', 'green', 'blue']
+        spin_indices = np.tile([0, 1, 2], self.Nx * self.Ny)
+    
         fig = go.Figure()
-        fig.add_trace(go.Scatter3d(x=X_lines, y=Y_lines, z=Z_lines,
-                                   mode="lines", line=dict(width=3, color="blue"), name="Spins"))
-        fig.add_trace(go.Scatter3d(x=x, y=y, z=z,
-                                   mode="markers", marker=dict(size=4, color="red"), name="Lattice points"))
-
-        fig.update_layout(
-            title="Kagome Lattice Spin Configuration",
-            scene=dict(xaxis_title="X", yaxis_title="Y", zaxis_title="Z", aspectmode='data'),
-            width=1200, height=800
-        )
+    
+        for s in range(3):
+            xs, ys, zs = [], [], []
+    
+            for xi, yi, zi, Sxi, Syi, Szi, si in zip(x, y, z, Sx, Sy, Sz, spin_indices):
+                if si == s:
+                    xs += [xi, xi + arrow_scale * Sxi, None]
+                    ys += [yi, yi + arrow_scale * Syi, None]
+                    zs += [zi, zi + arrow_scale * Szi, None]
+    
+            fig.add_trace(go.Scatter3d(
+                x=xs, y=ys, z=zs,
+                mode="lines",
+                line=dict(width=5, color=colors[s]),  
+                name=f"Sublattice {s}"
+            ))
+    
+        fig.add_trace(go.Scatter3d(
+            x=x, y=y, z=z,
+            mode="markers",
+            marker=dict(size=4, color="black"),
+            name="sites"
+        ))
+    
+        fig.update_layout(scene=dict(aspectmode="data"))
         fig.show(renderer="browser")
 
