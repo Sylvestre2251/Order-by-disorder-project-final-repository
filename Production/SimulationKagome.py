@@ -20,7 +20,7 @@ import plotly.graph_objects as go
 
 
 
-class Simulation:
+class Simulation(object):
     #This is the class used to do the simulation
     
     def __init__(self,Nx,Ny, J,directory,seed_control=False,seed=1500,preload=False,oldconfig=0):
@@ -266,14 +266,14 @@ class Simulation:
                 self.overrelaxation_2(overrelaxation_dose)
 
 
-            if  measure_capa==True:
+            if  measure_capa==True and  np.abs(Nf-comp)<=3000:
                 Ener.append(self.total_energy())
                 #print(self.total_energy())
 
                 self.acceptation_rates.append(flag/self.N)
                 #print(flag/self.N,T)
 
-
+                
                 sisj1.append(np.sum(np.einsum('abcl,defl->abcdef',self.config,self.config)))
                 sisj2.append(np.sum(np.power(np.einsum('abcl,defl->abcdef',self.config,self.config),2)))
                 sisj3.append(np.sum(np.power(np.einsum('abcl,defl->abcdef',self.config,self.config),3)))
