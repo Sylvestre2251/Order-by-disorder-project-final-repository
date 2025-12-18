@@ -16,16 +16,19 @@ Observing a phase transition at finite temperature via observables such as speci
 # Directory structure
 
 - Design
-noteooks .ipynb used for code creation and testing
+noteooks .ipynb used for code creation and testing and also thinkering
 - Production
 codes packaged into libraries for use
 - results
-simulation datas stored for post processing
-- Analysis
+simulation datas stored for post processing 
+KagomeFinal.py is the version up to the final report
+SimulationKagome.py is the version up to the presentation  with order parameters implemented
+Tutorial.ipynb shows a tutorial for the use of the library and various results of simulations 
+
 
 
 - figures
-figures to be used in the report
+some figures from the report
 
-- report
- .tex of the project report completed
+
+

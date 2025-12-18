@@ -1,0 +1,255 @@
+[33mcommit 0110611877a0dfae2403f6069d3e2aa06dba6722[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Tue Dec 16 21:23:11 2025 +0100
+
+    removed some files to reduce size
+
+[33mcommit be16074feb8388642d13539bf8ad455633c3ced2[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Tue Dec 16 21:18:48 2025 +0100
+
+    removed some files to reduce size
+
+[33mcommit fa61335d341b17bae50338a0f0c5dab140077e17[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Mon Dec 15 22:41:28 2025 +0100
+
+    last details
+
+[33mcommit 69dd5ff4e269f6c7f596326229759730022426ad[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Mon Dec 15 19:00:27 2025 +0100
+
+    new display
+
+[33mcommit 77b64f287498772b66bc754a8fde7e0ba34d7c88[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Mon Dec 15 18:15:12 2025 +0100
+
+    running
+
+[33mcommit c91d20f070df30a2fc11dca03f4f280768ff8259[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Mon Dec 15 16:39:06 2025 +0100
+
+    fixed order param
+
+[33mcommit 719f7b3e4e5a01c8a85b7827cf0064740240af9d[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Sun Dec 14 21:55:18 2025 +0100
+
+    added some matter
+
+[33mcommit 4921d7723a216973ec9e9ad875c9d2d65ec39482[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Sun Dec 14 21:14:05 2025 +0100
+
+    old
+
+[33mcommit 8f59b1039e5c523a75c50a1840fea84058f61c9e[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 16:36:57 2025 +0100
+
+    Delete Previous versions directory
+
+[33mcommit 871290d42bfa138dcb7c2fea5c80e84748084237[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 16:21:31 2025 +0100
+
+    Rename KAGOME_0_1.ipynb to KAGOME_0_1.ipynb
+
+[33mcommit 5a733051553d521728311660ecdf05d9fdd9fed0[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 16:08:03 2025 +0100
+
+    Update README.md
+
+[33mcommit ab96309cfc05984bc5252277e902f8587308d7ac[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Sat Dec 13 15:43:17 2025 +0100
+
+    added design
+
+[33mcommit 9b5d12c26bc31b1ac1529e010183fbc06b300ea2[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:30:00 2025 +0100
+
+    Update KagomeFinal.py
+
+[33mcommit 85ee6faaf22daa6c536e6fa66547d59f18323952[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:27:19 2025 +0100
+
+    Update compute_physical_quantities.py
+
+[33mcommit 17c46e2a4ea65bfc37fc64dc8b19757fc08c571b[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:22:53 2025 +0100
+
+    Update compute_physical_quantities.py
+
+[33mcommit 055f3dd1d8c819abcb4a1298625a1610df5b1a60[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:19:25 2025 +0100
+
+    Update compute_physical_quantities.py
+
+[33mcommit be94c71ab98e760bfa112d929bc113ecf3c5dba3[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:18:56 2025 +0100
+
+    Update KagomeFinal.py
+
+[33mcommit 2e9bfac4b39db8dab34b1de2b2a4a4bc8cc600d2[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:18:46 2025 +0100
+
+    Update KagomeFinal.py
+
+[33mcommit 968d1b1e5c8e7777b86e479621fd41a6e66fd16c[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:18:06 2025 +0100
+
+    Update KagomeFinal.py
+
+[33mcommit 36b1001ff4a3ba4c4f6f8335f17f957692c7ec9a[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:16:52 2025 +0100
+
+    Delete Results directory
+
+[33mcommit 2a9c278cc054decf3d0e2edc56b691dce08f3baf[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Sat Dec 13 15:16:35 2025 +0100
+
+    Add files via upload
+
+[33mcommit 00ce1d50f3074e8bb584f71b030aac77dabb7309[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Fri Dec 12 18:39:17 2025 +0100
+
+    3 new figures I did not have time to impolement error bars
+
+[33mcommit b6ec857cfd6f99de53454135e439a8e8106690ac[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 18:39:51 2025 +0100
+
+    Add files via upload
+    
+    Modifié KagomeFinal car erreur  : "self.x_l,self.y_l=np.meshgrid(range(Nx),range(Ny))
+    
+    TypeError: 'float' object cannot be interpreted as an integer " avec la version précédente
+
+[33mcommit 255e67f7c8923789899a5c475c1fe22631f47b7e[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 18:21:02 2025 +0100
+
+    Add files via upload
+
+[33mcommit d64a3c59abb06797b108a859021bbb46026c9399[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 18:20:47 2025 +0100
+
+    Delete Production/Tutorial.ipynb
+
+[33mcommit 46793e522b1ae86f6cf3c7c6b990db1578a4ae16[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 18:19:41 2025 +0100
+
+    Add files via upload
+
+[33mcommit a860fb44851039c9286d9f5c74a2acc3061406ff[m
+Author: TJMNANT <tanon-jean-michel.nguessan@polymtl.ca>
+Date:   Fri Dec 12 18:05:09 2025 +0100
+
+    added my functions to the package and moved the scripts parts to tutorial added my figures I will add results figures this night and handle order parameters tomorrow
+
+[33mcommit 5898853d2c7c00c890b72b878e909f4effe0d7f2[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 17:44:49 2025 +0100
+
+    Add files via upload
+
+[33mcommit 8afc01d72eb085e603fb4429f610c23d803c089b[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 17:21:20 2025 +0100
+
+    Add files via upload
+
+[33mcommit 66c367f2183ca2de9caa06f9c6d6f5f6ef34f226[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 17:20:16 2025 +0100
+
+    Add files via upload
+
+[33mcommit d56f1ca63c1fbb838d12c3bf603f70c6ffd171a7[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 17:18:21 2025 +0100
+
+    Delete Production/.gitignore
+
+[33mcommit a3eb7dfbdf45f5dcd75e58e69c26e812e8350c31[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 17:18:07 2025 +0100
+
+    Add files via upload
+
+[33mcommit d65e5a2dfef95083c21c89e406b10fa6f1e5c1ec[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 16:08:03 2025 +0100
+
+    Create .gitignore
+
+[33mcommit 6b659f5fe06eb3a51df5fccf027010cf53967d28[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:27:48 2025 +0100
+
+    Create .gitignore
+
+[33mcommit 4d85c1c74630ca753ddebdcb6f82e67a0ee6d86d[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:25:06 2025 +0100
+
+    Delete Figures/...
+
+[33mcommit 069f9f36d02dfc26402dafe03d7abb56f9c850a7[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:24:48 2025 +0100
+
+    Add files via upload
+
+[33mcommit 650a06d3b76fc6f52acb9fd73de01072e3c0c8e7[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:23:11 2025 +0100
+
+    Create ...
+
+[33mcommit a5a8d1776729d5068d7ab667fd949018f102c678[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:22:49 2025 +0100
+
+    Delete Figures/.gitignore
+
+[33mcommit 646bf63fe3c0c7ad081e4ef6bfddb3cd98597186[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:22:39 2025 +0100
+
+    Delete Figures/add
+
+[33mcommit 17da3557af0f33ad5e66c8a7073b9accb31fa385[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:21:05 2025 +0100
+
+    Create .gitignore
+
+[33mcommit 9afef847395ebec9d5436a8d65e84c561b5797ec[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:14:51 2025 +0100
+
+    Create add
+
+[33mcommit 2c3e358ad1532775daff821775bb910dfe9d9b73[m
+Author: Sylvestre2251 <sylvestreop@gmail.com>
+Date:   Fri Dec 12 15:04:12 2025 +0100
+
+    Add files via upload

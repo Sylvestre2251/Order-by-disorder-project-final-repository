@@ -1,6 +1,49 @@
 
 
+import SimulationKagome
+import numpy as np
+from pathlib import Path
+import os
+import matplotlib.pyplot as plt
 
+J=1
+Ntemp=35
+L=12
+Nx=L
+Ny=L
+
+N=Nx*Ny*3
+Temp=np.power(10*np.ones(Ntemp),np.linspace(-0.3,-3.8,Ntemp))
+print(Temp)
+#initialise simulation
+A=SimulationKagome.Simulation(Nx,Ny, J,'Batch3',seed_control=False,seed=1500)
+
+print(A.total_energy())
+
+
+
+
+for j,T in enumerate(Temp):
+    
+
+    decoherencetime=100000
+    numberMC=500000
+   
+    A.Monte_Carlo(decoherencetime,T,measure_capa=False,overrelaxation=True,overrelaxation_dose=0.01)
+    A.verify_norm()
+
+    for q in range(1):
+        A.Monte_Carlo(numberMC,T,measure_capa=True,overrelaxation=True,overrelaxation_dose=0.03)
+        A.verify_norm()
+
+    print(j,'temperature done')
+
+
+    name=f'simulation{j}'
+    
+    A.saveconfig(name,T)
+
+    
 import KagomeFinal
 
 
